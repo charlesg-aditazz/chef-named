@@ -1,0 +1,22 @@
+//
+// Do any local configuration here
+//
+
+// Consider adding the 1918 zones here, if they are not used in your
+// organization
+
+
+<% @zones.each_with_index do |zone, i| %>
+// zone definition for <%= zone.id %>
+zone "<%= zone.id %>" {
+        type master;
+        file "/var/lib/bind/<%= zone.id %>";
+        //forwarders {};
+        // If we do not comment the ''forwarders'' "empty" clients of the local subnet in my case don't have access to the upstream DNS ?
+        //allow-update { key ns-example-com_rndc-key; };
+        allow-update { key rndc-key; };
+        //confusion between the file name to import (ns-example-com_rndc-key) and the key label (rndc-key) ?
+};
+<% end %>
+
+include "/etc/bind/zones.rfc1918";

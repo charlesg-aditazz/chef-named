@@ -12,18 +12,24 @@
 #hosts = search(:node, "*:*", "X_CHEF_id_CHEF_X asc")
 hosts = search(:node, "*:*")
 
-log "Hosts: #{hosts.join(', ')}" do
+log "hosts: #{hosts.join(', ')}" do
+  level :debug
+end
+
+nameservers = search(:node, "role:nameserver")
+
+log "nameservers: #{nameservers.join(', ')}" do
   level :debug
 end
 
 zones = search(:zones, "*:*")
 
-log "Zones: #{zones.join(', ')}" do
+log "zones: #{zones.join(', ')}" do
   level :debug
 end
 
 execute "reload-bind9" do
-  command "killall -HUP bind9 || true"
+  command "service bind9 stop && service bind9 start"
   action :nothing
 end
 
@@ -31,16 +37,26 @@ zones.each do |z|
 
     puts z
 
-    template "/etc/bind/zones.#{z.id}" do
-        source "zonefile"
+    template "/var/lib/bind/#{z.id}" do
+        source "example.com"
         owner "root"
-        group "root"
+        group "bind"
         mode 0644
         variables(
             :zone => z,
+            :nameservers => nameservers,
             :hosts => hosts
         )
-        notifies :run, resources(:execute => "reload-bind9")
     end
 end
 
+template "/etc/bind/named.conf.local" do
+    source "named.conf.local"
+    owner "root"
+    group "bind"
+    mode 0644
+    variables(
+        :zones => zones
+    )
+    notifies :run, resources(:execute => "reload-bind9")
+end
