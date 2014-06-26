@@ -55,7 +55,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # information on available options.
 
   # The path to the Berksfile to use with Vagrant Berkshelf
-  # config.berkshelf.berksfile_path = "./Berksfile"
+  config.berkshelf.berksfile_path = "./Berksfile"
 
   # Enabling the Berkshelf plugin. To enable this globally, add this configuration
   # option to your ~/.vagrant.d/Vagrantfile file
@@ -69,7 +69,18 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # to skip installing and copying to Vagrant's shelf.
   # config.berkshelf.except = []
 
-  config.vm.provision :chef_solo do |chef|
+  config.vm.provision :chef_client do |chef|
+
+    chef.custom_config_path = "Vagrantfile.chef"
+
+    chef.chef_server_url = 'https://cloudcontroller.aditazz'
+
+    chef.validation_client_name = 'Charless-MacBook-Pro'
+    chef.validation_key_path = '/Users/charles/.chef/aditazz/Charless-MacBook-Pro.pem'
+    chef.delete_node = true
+    chef.delete_client = true
+
+
     chef.json = {
       mysql: {
         server_root_password: 'rootpass',
@@ -79,7 +90,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     }
 
     chef.run_list = [
-        "recipe[named::default]"
+        "recipe[named::server]",
+        "recipe[named::autodnshosts]"
     ]
   end
 end
