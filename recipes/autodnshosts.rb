@@ -16,11 +16,13 @@ log "hosts: #{hosts.join(', ')}" do
   level :debug
 end
 
+
 nameservers = search(:node, "role:nameserver")
 
 log "nameservers: #{nameservers.join(', ')}" do
   level :debug
 end
+
 
 zones = search(:zones, "*:*")
 
@@ -28,17 +30,19 @@ log "zones: #{zones.join(', ')}" do
   level :debug
 end
 
+
 execute "reload-bind9" do
   command "service bind9 stop && service bind9 start"
   action :nothing
 end
+
 
 zones.each do |z|
 
     puts z
 
     template "/var/lib/bind/#{z.id}" do
-        source "example.com"
+        source "example.tld"
         owner "root"
         group "bind"
         mode 0644
