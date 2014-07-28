@@ -37,17 +37,17 @@ execute "reload-bind9" do
 end
 
 
-zones.each do |z|
+zones.each do |zone|
 
-    puts z
+    puts zone
 
-    template "/var/lib/bind/#{z.id}" do
+    template "/var/lib/bind/#{zone.base}" do
         source "example.tld"
         owner "root"
         group "bind"
         mode 0644
         variables(
-            :zone => z,
+            :zone => zone,
             :nameservers => nameservers,
             :hosts => hosts
         )
