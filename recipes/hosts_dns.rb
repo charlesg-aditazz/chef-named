@@ -41,7 +41,7 @@ zones.each do |zone|
 
     puts zone
 
-    template "/var/lib/bind/#{zone.base}" do
+    template "/var/lib/bind/#{zone.name}" do
         source "example.tld"
         owner "root"
         group "bind"
