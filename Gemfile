@@ -2,6 +2,9 @@ source 'https://rubygems.org'
 
 gem 'berkshelf'
 
+# bind9 support
+gem 'bind9mgr'
+
 # Uncomment these lines if you want to live on the Edge:
 #
 #group :development do

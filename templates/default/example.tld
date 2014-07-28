@@ -1,11 +1,11 @@
-; zone configuration file
+; zone configuration file for <%= @zone[:id] %>
 $TTL 3D
-@       IN      SOA     <%= @zone[:id] %>. <%= @zone[:root] %>. (
-                        2014062301      ; serial, todays date + todays serial #
-                        60              ; refresh, seconds
-                        60              ; retry, seconds
-                        60              ; expire, seconds
-                        60 )            ; minimum, seconds
+@       IN      SOA     <%= @zone[:base] %>. <%= @zone[:root] %>. (
+                        <%= @zone[:serial] %>       ; serial, todays date + todays serial #
+                        60                          ; refresh, seconds
+                        60                          ; retry, seconds
+                        60                          ; expire, seconds
+                        60 )                        ; minimum, seconds
 
 ;
 ; Nameserver Records
@@ -25,7 +25,7 @@ $TTL 3D
 ; this machine is going to be repeated here, but it does not matter since it is
 ; the first match that counts
 <% @hosts.each_with_index do |node, i| %>
-<% if ((@hosts[i]["hostname"] != nil) && (@hosts[i]["ipaddress"] != nil)) %>
+<% if ((@hosts[i]["hostname"] != nil) && (@hosts[i]["ipaddress"] != nil) && (@hosts[i]['domain'] == @zone.base)) %>
 <%= @hosts[i]["hostname"] %>        A       <%= @hosts[i]["ipaddress"] %>
 <% end %>
 <% end %>

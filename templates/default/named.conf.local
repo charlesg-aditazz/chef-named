@@ -8,9 +8,9 @@
 
 <% @zones.each_with_index do |zone, i| %>
 // zone definition for <%= zone.id %>
-zone "<%= zone.id %>" {
+zone "<%= zone.base %>" {
         type master;
-        file "/var/lib/bind/<%= zone.id %>";
+        file "/var/lib/bind/<%= zone.base %>";
         //forwarders {};
         // If we do not comment the ''forwarders'' "empty" clients of the local subnet in my case don't have access to the upstream DNS ?
         //allow-update { key ns-example-com_rndc-key; };
