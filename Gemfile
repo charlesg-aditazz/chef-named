@@ -17,3 +17,5 @@ group :plugins do
     gem "vagrant-omnibus", github: "schisamo/vagrant-omnibus"
 end
 
+gem 'test-kitchen'
+gem 'kitchen-vagrant'
