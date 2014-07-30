@@ -7,10 +7,11 @@ provisioner:
 
 platforms:
   - name: ubuntu-12.04
-  - name: centos-6.4
+  - name: ubuntu-14.04
 
 suites:
   - name: default
     run_list:
-      - recipe[named::default]
+      - recipe[named::server]
+      - recipe[named::hosts_dns]
     attributes:

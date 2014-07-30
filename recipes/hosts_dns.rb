@@ -48,7 +48,7 @@ zones.each do |zone|
         mode 0644
         variables(
             :zone => zone,
-            :nameservers => nameservers,
+            :nameservers => zone[:nameservers],
             :hosts => hosts
         )
     end
