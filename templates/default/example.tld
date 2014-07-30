@@ -11,7 +11,7 @@ $TTL 3D
 ; Nameserver Records
 ;
 <% @nameservers.each_with_index do |nameserver, i| %>
-@       IN      NS      <%= @nameservers[i]["fqdn"] %>.
+@       IN      NS      <%= @nameservers[i]["name"] %>.
 <% end %>
 ;
 ; Applications DNS
