@@ -1,3 +1,4 @@
+include_recipe 'apt'
 
 
 # install bind packages on ubuntu
