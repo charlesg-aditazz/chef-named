@@ -31,8 +31,8 @@ log "zones: #{zones.join(', ')}" do
 end
 
 
-execute "reload-bind9" do
-  command "service bind9 stop && service bind9 start"
+execute "reload-named" do
+  command "service named stop && service named start"
   action :nothing
 end
 
@@ -44,7 +44,7 @@ zones.each do |zone|
     template "/var/lib/bind/#{zone[:zone_name]}" do
         source "example.tld"
         owner "root"
-        group "bind"
+        group "named"
         mode 0644
         variables(
             :zone => zone,
@@ -57,10 +57,10 @@ end
 template "/etc/bind/named.conf.local" do
     source "named.conf.local"
     owner "root"
-    group "bind"
+    group "named"
     mode 0644
     variables(
         :zones => zones
     )
-    notifies :run, resources(:execute => "reload-bind9")
+    notifies :run, resources(:execute => "reload-named")
 end
